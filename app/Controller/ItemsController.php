@@ -41,10 +41,10 @@ class ItemsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Item->create();
 			if ($this->Item->save($this->request->data)) {
-				$this->Session->setFlash(__('The item has been saved'));
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('The item has been created'),'default',array('class'=>'success'));
+				$this->redirect(array('action' => 'edit',$this->Item->getInsertId()));
 			} else {
-				$this->Session->setFlash(__('The item could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('The item could not be created. Please, try again.'));
 			}
 		}
 		$users = $this->Item->User->find('list');

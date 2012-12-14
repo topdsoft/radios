@@ -6,6 +6,14 @@ App::uses('AppController', 'Controller');
  * @property User $User
  */
 class UsersController extends AppController {
+	
+	public function beforeFilter() {
+		$this->Auth->allow('add','confirm');
+//moved to AppController.php
+//		$this->Auth->loginError="The Username/Password You Entered Does Not Match Our Records";
+//		$this->Auth->authError="You Must Log In To Access This Location";
+		parent::beforeFilter();
+	}
 
 /**
  * index method
@@ -99,5 +107,19 @@ class UsersController extends AppController {
 		}
 		$this->Session->setFlash(__('User was not deleted'));
 		$this->redirect(array('action' => 'index'));
+	}
+
+	public function login() {
+		if ($this->request->is('post')) {
+			if ($this->Auth->login()) {
+				return $this->redirect($this->Auth->redirect());
+			} else {
+				$this->Session->setFlash(__('Username or password is incorrect'), 'default', array(), 'auth');
+			}
+		}
+	}
+
+	public function logout() {
+		
 	}
 }

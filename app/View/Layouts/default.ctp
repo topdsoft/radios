@@ -39,11 +39,21 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 <body>
 	<div id="container">
 		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
+			<?php
+			if($this->Session->read('Auth.User.username')) {
+				//user is logged in
+				echo 'Welcome '.$this->Session->read('Auth.User.username').'<br>';
+				echo $this->Html->link('Logout', array('controller'=>'users','action'=>'logout'));
+			} else {
+				//no user logged in
+				echo $this->Html->link('Login', array('controller'=>'users','action'=>'login')).'<br>';
+			}//endif
+			?>
 		</div>
 		<div id="content">
 
 			<?php echo $this->Session->flash(); ?>
+			<?php echo $this->Session->flash('auth'); ?>
 
 			<?php echo $this->fetch('content'); ?>
 		</div>

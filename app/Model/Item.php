@@ -10,6 +10,11 @@ App::uses('AppModel', 'Model');
 class Item extends AppModel {
 
 
+	public $virtualFields= array(
+		'images'=>'select count(*) from images as Image where Image.item_id=Item.id',
+		'comments'=>'select count(*) from comments as Comment where Comment.item_id=Item.id',
+		'views'=>'select count(*) from items_users where items_users.item_id=Item.id'
+		);
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
