@@ -3,6 +3,7 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
+			<th></th>
 			<th><?php echo $this->Paginator->sort('created'); ?></th>
 			<th><?php echo $this->Paginator->sort('location'); ?></th>
 			<th><?php echo $this->Paginator->sort('images'); ?></th>
@@ -10,10 +11,12 @@
 			<th><?php echo $this->Paginator->sort('views'); ?></th>
 			<th></th>
 	</tr>
+<?php //debug($items) ?>
 	<?php
 	foreach ($items as $item): ?>
 	<tr>
 		<td><?php echo h($item['Item']['id']); ?>&nbsp;</td>
+		<td><?php if(isset($item['Image'][0])) echo $this->Html->image('thumbnails/'.$item['Image'][0]['filename']); ?></td>
 		<td><?php echo h($item['Item']['created']); ?>&nbsp;</td>
 		<td><?php echo h($item['Item']['location']); ?>&nbsp;</td>
 		<td><?php echo h($item['Item']['images']); ?>&nbsp;</td>
