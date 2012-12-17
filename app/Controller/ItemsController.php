@@ -15,6 +15,13 @@ class ItemsController extends AppController {
 	public function index() {
 		$this->Item->recursive = 1;
 		$this->set('items', $this->paginate());
+		//get list of items this user has viewed
+		$hasViewed=$this->Item->ItemsUser->find('all',array('conditions'=>array('user_id'=>$this->Auth->user('id'))));
+		$hasViewed2=array();
+		foreach($hasViewed as $hv) $hasViewed2[]=$hv['ItemsUser']['item_id'];
+		$this->set('hasViewed',$hasViewed2);
+		$this->set('admin',($this->Auth->user('id')==1));
+//debug($hasViewed2);exit;
 	}
 
 /**
@@ -29,7 +36,28 @@ class ItemsController extends AppController {
 		if (!$this->Item->exists()) {
 			throw new NotFoundException(__('Invalid item'));
 		}
+		if ($this->request->is('post') || $this->request->is('put')) {
+			//returning data
+			if(!empty($this->request->data['Comment']['text'])) {
+				//user typed something
+				$this->request->data['Comment']['item_id']=$id;
+				$this->request->data['Comment']['user_id']=$this->Auth->user('id');
+				$this->Item->Comment->create();
+				$this->Item->Comment->save($this->request->data);
+				unset($this->request->data['Comment']);
+//debug($this->request->data);exit;
+			}
+		}
 		$this->set('item', $this->Item->read(null, $id));
+		$users = $this->Item->User->find('list');
+		$this->set(compact('users'));
+		$this->set('admin',($this->Auth->user('id')==1));
+		//check if user has viewed this item before
+		if(!$this->Item->ItemsUser->find('first',array('conditions'=>array('user_id'=>$this->Auth->user('id'),'item_id'=>$id)))) {
+			//first time viewing
+			$this->Item->ItemsUser->create();
+			$this->Item->ItemsUser->save(array('item_id'=>$id,'user_id'=>$this->Auth->user('id')));
+		}
 	}
 
 /**

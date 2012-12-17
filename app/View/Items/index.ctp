@@ -15,7 +15,10 @@
 	<?php
 	foreach ($items as $item): ?>
 	<tr>
-		<td><?php echo h($item['Item']['id']); ?>&nbsp;</td>
+		<td>
+			<?php if(!in_array($item['Item']['id'],$hasViewed)) echo '<strong>*NEW*</strong>'  ?>
+			<?php echo h($item['Item']['id']); ?>&nbsp;
+		</td>
 		<td><?php if(isset($item['Image'][0])) echo $this->Html->image('thumbnails/'.$item['Image'][0]['filename']); ?></td>
 		<td><?php echo h($item['Item']['created']); ?>&nbsp;</td>
 		<td><?php echo h($item['Item']['location']); ?>&nbsp;</td>
@@ -24,8 +27,8 @@
 		<td><?php echo h($item['Item']['views']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $item['Item']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $item['Item']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $item['Item']['id']), null, __('Are you sure you want to delete # %s?', $item['Item']['id'])); ?>
+			<?php if($admin) echo $this->Html->link(__('Edit'), array('action' => 'edit', $item['Item']['id'])); ?>
+			<?php if($admin) echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $item['Item']['id']), null, __('Are you sure you want to delete # %s?', $item['Item']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

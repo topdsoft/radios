@@ -33,4 +33,11 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 	public $components = array('Auth', 'Session', 'Cookie');
+	
+	public function beforeFilter(){
+		//auth messages
+		$this->Auth->loginError="The Username/Password You Entered Does Not Match Our Records";
+		$this->Auth->authError="You Must Log In To Access This Location";
+	}
+
 }
