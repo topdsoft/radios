@@ -1,4 +1,4 @@
-<?php echo $user['User']['message']; ?>,
+<?php echo $user['User']['message']; ?>
 
 To activate your account click the following link:
 <?php echo $this->Html->url( array('controller'=>'users','action' => 'confirm', $user['User']['hash']),true);?>

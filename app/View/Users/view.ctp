@@ -1,5 +1,5 @@
 <div class="users view">
-<h2><?php  echo __('User'); ?></h2>
+<h2><?php  echo __('User: ').h($user['User']['username']); ?></h2>
 	<dl>
 		<dt><?php echo __('Id'); ?></dt>
 		<dd>
@@ -11,9 +11,9 @@
 			<?php echo h($user['User']['username']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Password'); ?></dt>
+		<dt><?php echo __('Confirmed'); ?></dt>
 		<dd>
-			<?php echo h($user['User']['password']); ?>
+			<?php echo h($user['User']['confirmed']); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Email'); ?></dt>
@@ -23,86 +23,48 @@
 		</dd>
 	</dl>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit User'), array('action' => 'edit', $user['User']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete User'), array('action' => 'delete', $user['User']['id']), null, __('Are you sure you want to delete # %s?', $user['User']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Users'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New User'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Comments'), array('controller' => 'comments', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Comment'), array('controller' => 'comments', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Items'), array('controller' => 'items', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Item'), array('controller' => 'items', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
+<?php echo $this->element('menu'); ?>
 <div class="related">
-	<h3><?php echo __('Related Comments'); ?></h3>
 	<?php if (!empty($user['Comment'])): ?>
+	<h3><?php echo __('Users Comments'); ?></h3>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
-		<th><?php echo __('Id'); ?></th>
 		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Text'); ?></th>
 		<th><?php echo __('Item Id'); ?></th>
-		<th><?php echo __('User Id'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
+		<th><?php echo __('Text'); ?></th>
 	</tr>
 	<?php
 		$i = 0;
 		foreach ($user['Comment'] as $comment): ?>
 		<tr>
-			<td><?php echo $comment['id']; ?></td>
 			<td><?php echo $comment['created']; ?></td>
-			<td><?php echo $comment['text']; ?></td>
-			<td><?php echo $comment['item_id']; ?></td>
-			<td><?php echo $comment['user_id']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'comments', 'action' => 'view', $comment['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'comments', 'action' => 'edit', $comment['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'comments', 'action' => 'delete', $comment['id']), null, __('Are you sure you want to delete # %s?', $comment['id'])); ?>
-			</td>
+			<td><?php echo $this->Html->link('Item#'.$comment['item_id'],array('controller'=>'items','action'=>'view',$comment['item_id'])); ?></td>
+			<td><?php echo nl2br($comment['text']); ?></td>
 		</tr>
 	<?php endforeach; ?>
 	</table>
 <?php endif; ?>
-
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Comment'), array('controller' => 'comments', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
+<?php //debug($user);  ?>
 </div>
 <div class="related">
-	<h3><?php echo __('Related Items'); ?></h3>
 	<?php if (!empty($user['Item'])): ?>
+	<h3><?php echo __('Items Viewed'); ?></h3>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Created'); ?></th>
+		<th><?php echo __('Date First Viewed'); ?></th>
 		<th><?php echo __('Location'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php
 		$i = 0;
 		foreach ($user['Item'] as $item): ?>
 		<tr>
-			<td><?php echo $item['id']; ?></td>
-			<td><?php echo $item['created']; ?></td>
+			<td><?php echo $this->Html->link('Item# '.$item['id'],array('controller'=>'items','action'=>'view',$item['id'])); ?></td>
+			<td><?php echo $item['ItemsUser']['created']; ?></td>
 			<td><?php echo $item['location']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'items', 'action' => 'view', $item['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'items', 'action' => 'edit', $item['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'items', 'action' => 'delete', $item['id']), null, __('Are you sure you want to delete # %s?', $item['id'])); ?>
-			</td>
 		</tr>
 	<?php endforeach; ?>
 	</table>
 <?php endif; ?>
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Item'), array('controller' => 'items', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
 </div>
